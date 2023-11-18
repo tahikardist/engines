@@ -1,8 +1,21 @@
 const { PrismaClient } = require('@prisma/client');
-const { engines, engineTypes, engineLiterature } = require('./data');
+const { engines, engineTypes, users, engineLiterature } = require('./data');
 const prisma = new PrismaClient();
 
 async function main() {
+  users.forEach(async (user) => {
+    await prisma.user.upsert({
+      where: {
+        id: user.id,
+      },
+      create: {
+        ...user,
+      },
+      update: {
+        ...user,
+      },
+    });
+  });
   engineTypes.forEach(async (engineType) => {
     await prisma.engineType.upsert({
       where: {
