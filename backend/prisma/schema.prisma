@@ -6,35 +6,43 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Engine {
   id           Int        @id @default(autoincrement())
-  title        String     @unique @db.VarChar(255)
-  description  String?    @db.Text
-  link         String     @db.VarChar(255)
-  img          String     @db.VarChar(255)
+  title        String     @unique 
+  description  String?    
+  link         String     
+  img          String     
   engineType   EngineType @relation(fields: [engineTypeId], references: [id])
-  engineTypeId Int
+  engineTypeId Int @map("engine_type_id")
+
+  @@map("engines")
 }
 
 model EngineType {
   id      Int      @id @default(autoincrement())
-  title   String   @db.VarChar(255)
+  title   String   
   engines Engine[]
+
+  @@map("engine_types")
 }
 
 model EngineLiterature {
   id    Int    @id @default(autoincrement())
-  title String @db.VarChar(255)
-  link  String @db.VarChar(255)
-  img   String @db.VarChar(255)
+  title String 
+  link  String 
+  img   String 
+
+  @@map("engine_literature")
 }
 
 model User {
   id       Int    @id @default(autoincrement())
   username String
   password String
+
+  @@map("users")
 }
