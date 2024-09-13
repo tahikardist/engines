@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { EnginesService } from './engines.service';
@@ -27,8 +28,12 @@ export class EnginesController {
   }
 
   @Get()
-  async findAll() {
-    return this.enginesService.findAll();
+  async findAll(
+    @Query('q') q: string,
+    @Query('sort') sort: 'title'
+    @Query('order') order: 'asc' | 'desc',
+  ) {
+    return this.enginesService.findAll({ q, sort, order });
   }
 
   @Post()
