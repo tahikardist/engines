@@ -78,7 +78,10 @@ function onFileInput(event) {
               />
             </div>
           </div>
-          <label class="py-1.5 px-3 text-gray-800 text-sm font-medium bg-sky-500 rounded cursor-pointer hover:bg-sky-700" for="file-input">
+          <label
+            class="py-1.5 px-3 dark:text-gray-800 text-sm font-medium bg-blue-500 text-white dark:bg-sky-500 rounded cursor-pointer hover:bg-sky-700"
+            for="file-input"
+          >
             Выбрать файл
           </label>
           <input id="file-input" class="hidden" type="file" @input="onFileInput" accept="image/*" />
