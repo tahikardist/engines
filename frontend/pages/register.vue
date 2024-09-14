@@ -9,22 +9,28 @@ definePageMeta({
   middleware: ["guest"],
 });
 
-let { login } = useAuth();
+let { register } = useAuth();
 
-let error = ref(false);
+let error = ref("");
 
 const fields = [
   {
     name: "username",
     type: "text",
     label: "Логин",
-    placeholder: "Введите ваш логин",
+    placeholder: "Введите логин",
   },
   {
     name: "password",
-    label: "Пароль",
+    label: "Придумайте пароль",
     type: "password",
-    placeholder: "Введите ваш пароль",
+    placeholder: "Введите пароль",
+  },
+  {
+    name: "password_confirmation",
+    label: "Подтвердите пароль",
+    type: "password",
+    placeholder: "Подтвердите пароль",
   },
 ];
 
@@ -32,14 +38,16 @@ const validate = (state: any) => {
   const errors: FormError[] = [];
   if (!state.username) errors.push({ path: "username", message: "Это поле обязательно для заполнения." });
   if (!state.password) errors.push({ path: "password", message: "Это поле обязательно для заполнения." });
+  if (!state.password_confirmation) errors.push({ path: "password_confirmation", message: "Это поле обязательно для заполнения." });
+  if (state.password !== state.password_confirmation) errors.push({ path: "password_confirmation", message: "Пароли должны совпадать." });
   return errors;
 };
 
 async function onSubmit(data: any) {
   try {
-    await login(data);
+    await register(data);
   } catch (err) {
-    error.value = true;
+    error.value = err.response._data.message;
   }
 }
 </script>
@@ -50,20 +58,14 @@ async function onSubmit(data: any) {
       <UAuthForm
         :fields="fields"
         :validate="validate"
-        title="Авторизация"
+        title="Регистрация"
         align="top"
         icon="i-heroicons-lock-closed"
         :ui="{ base: 'text-center', footer: 'text-center' }"
         @submit="onSubmit"
       >
-        <template #description>
-          Нет аккаунта? <NuxtLink to="/register" class="text-primary font-medium">Зарегистрироваться</NuxtLink>.
-        </template>
-        <template #password-hint>
-          <NuxtLink to="/" class="text-primary font-medium">Забыли пароль?</NuxtLink>
-        </template>
         <template #validation>
-          <UAlert v-if="error" color="red" icon="i-heroicons-information-circle-20-solid" title="Неверно введен логин или пароль" />
+          <UAlert v-if="error" color="red" icon="i-heroicons-information-circle-20-solid" :title="error" />
         </template>
       </UAuthForm>
     </UCard>

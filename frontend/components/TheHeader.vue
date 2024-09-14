@@ -35,11 +35,16 @@ const links = computed(() =>
           icon: "i-heroicons-user",
           to: "/login",
         },
+        {
+          label: "Зарегистрироваться",
+          icon: "i-heroicons-user-plus",
+          to: "/register",
+        },
       ]
     : [
         {
-          label: "Движки",
-          to: "/engines",
+          label: "Панель администратора",
+          to: "/admin",
         },
       ]
 );

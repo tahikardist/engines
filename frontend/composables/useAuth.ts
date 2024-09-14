@@ -28,6 +28,21 @@ export const useAuth = <T = User>() => {
     }
   }
 
+  async function register(credentials: LoginCredentials) {
+    if (isLoggedIn.value) return;
+
+    let res = await $fetch(apiUrl + "/auth/register", {
+      method: "post",
+      body: credentials,
+    });
+
+    let token = useCookie("token");
+    token.value = res?.access_token as string;
+
+    await refresh(token.value);
+    window.location.href = "/";
+  }
+
   async function login(credentials: LoginCredentials) {
     if (isLoggedIn.value) return;
 
@@ -56,7 +71,7 @@ export const useAuth = <T = User>() => {
   return {
     user,
     isLoggedIn,
-
+    register,
     login,
     logout,
     refresh,

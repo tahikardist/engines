@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
@@ -21,6 +21,26 @@ export class AuthService {
 
   async login(user: User) {
     let payload = { username: user.username, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
+  async register(data: { username: string; password: string }) {
+    let user = await this.usersService.findOne(data.username);
+    if (user)
+      throw new HttpException(
+        'Такой пользователь уже существует',
+        HttpStatus.CONFLICT,
+      );
+
+    let newUser = await this.usersService.create({
+      username: data.username,
+      password: data.password,
+    });
+
+    let payload = { username: newUser.username, sub: newUser.id };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

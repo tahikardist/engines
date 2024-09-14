@@ -30,7 +30,7 @@ export class EnginesController {
   @Get()
   async findAll(
     @Query('q') q: string,
-    @Query('sort') sort: 'title'
+    @Query('sort') sort: 'title',
     @Query('order') order: 'asc' | 'desc',
   ) {
     return this.enginesService.findAll({ q, sort, order });

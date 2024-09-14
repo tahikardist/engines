@@ -11,14 +11,14 @@ const links = [
   {
     label: "Дашборд",
     icon: "i-heroicons-home",
-    to: "/engines",
+    to: "/admin",
     tooltip: { text: "Дашборд" },
     exact: true,
   },
   {
     label: "Движки",
     icon: "i-heroicons-inbox",
-    to: "/engines/items",
+    to: "/admin/engines",
     tooltip: { text: "Движки" },
     exact: true,
   },
