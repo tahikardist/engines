@@ -2,7 +2,7 @@
 import type { FormError } from "#ui/types";
 
 useHead({
-  title: "Авторизация",
+  title: "Регистрация",
 });
 
 definePageMeta({
